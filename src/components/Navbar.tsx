@@ -1,30 +1,16 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const NAVBAR_ITEMS = [
-  {
-    title: 'Menu',
-    path: '/',
-  },
-  {
-    title: 'Add Ice Cream',
-    path: '/new-ice-cream',
-  },
-];
-
-const Navbar = () => {
-  const { pathname } = useLocation();
-
+const Navbar = ({
+  links,
+}: {
+  links: Array<{ title: string; path: string }>;
+}) => {
   return (
     <nav>
-      {NAVBAR_ITEMS.map(({ title, path }) => (
-        <Link
-          key={path}
-          to={path}
-          className={pathname === path ? 'active' : ''}
-        >
+      {links.map(({ title, path }) => (
+        <NavLink key={path} to={path}>
           {title}
-        </Link>
+        </NavLink>
       ))}
     </nav>
   );

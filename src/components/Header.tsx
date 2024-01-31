@@ -1,6 +1,16 @@
-import React from 'react';
 import iceCreamImage from '../assets/img/ultimate-ice-cream.svg';
 import Navbar from './Navbar';
+
+const NAVBAR_ITEMS = [
+  {
+    title: 'Menu',
+    path: '/',
+  },
+  {
+    title: 'Add Ice Cream',
+    path: '/new-ice-cream',
+  },
+];
 
 const Header = () => (
   <header>
@@ -8,7 +18,7 @@ const Header = () => (
       <img src={iceCreamImage} alt=""></img>
       Ultimate Ice Cream
     </h1>
-    <Navbar></Navbar>
+    <Navbar links={NAVBAR_ITEMS}></Navbar>
   </header>
 );
 
