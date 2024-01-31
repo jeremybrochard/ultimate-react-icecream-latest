@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 const LoadingSpinner = ({
   loadingMessage = 'Loading...',
   doneLoadingMessage = 'Loading data is complete!',
-  isLoading = false,
+  isLoading
 }: {
   loadingMessage?: string;
   doneLoadingMessage?: string,
-  isLoading?: boolean;
+  isLoading: boolean;
 }) => {
   const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
   const [showLoadingDoneMessage, setShowLoadingDoneMessager] = useState(false);

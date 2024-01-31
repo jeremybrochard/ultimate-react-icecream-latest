@@ -1,23 +1,33 @@
 import { useParams } from 'react-router-dom';
 import { MenuItem } from '../models/menu-item';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IceCreamImage from '../components/IceCreamImage';
-
-const MOCKED_MENU_ITEM: MenuItem = {
-  id: 6,
-  iceCream: { id: 21, name: 'Castle in the Sky' },
-  inStock: true,
-  quantity: 50,
-  price: 2.19,
-  description: 'A floating stronghold of vanilla, chocolate and pistachio',
-};
+import LoadingSpinner from '../components/LoadingSpinner';
+import { getIceCream } from '../data/ice-cream-data';
 
 const IceCream = () => {
-  const [menuItem, setMenuItem] = useState(MOCKED_MENU_ITEM);
   const { id } = useParams();
+  const [menuItem, setMenuItem] = useState(null as MenuItem | null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadIceCream = async (id: number): Promise<void> => {
+    const menuItem = await getIceCream(id);
+    if (menuItem) {
+      setMenuItem({ ...menuItem });
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      loadIceCream(+id);
+    }
+  }, [id]);
 
   const onFormValueChange = (event: any) => {
-    console.log(event.target.name, event.target.type);
+    if (!menuItem) {
+      return;
+    }
     let value = event.target.value;
 
     if (event.target.type === 'checkbox') {
@@ -29,10 +39,10 @@ const IceCream = () => {
     });
   };
 
-  console.log(menuItem);
   return (
     <section>
       <h2 className="main-heading">Update this beauty</h2>
+      <LoadingSpinner isLoading={isLoading}></LoadingSpinner>
       {menuItem && (
         <div className="form-frame">
           <div className="image-container">
