@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import IceCreamImage from '../components/IceCreamImage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -13,7 +13,11 @@ const IceCream = () => {
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const [loadingMessage, setLoadingMessage] = useState(`Loading ice cream...`);
+  const [doneLoadingMessage, setDoneLoadingMessage] = useState(
+    `Done loading ice cream.`
+  );
+  const [doRedirectToHomePage, setDoRedirectToHomePage] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -49,9 +53,10 @@ const IceCream = () => {
 
   const onFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(menuItem);
-    setIsLoading(true);
     if (menuItem) {
+      setLoadingMessage('Updating ice cream...');
+      setDoneLoadingMessage('Done updating ice cream.');
+      setIsLoading(true);
       const updatedIceCream = await updateMenuItem(menuItem);
       setMenuItem({ ...updatedIceCream });
       setIsLoading(false);
@@ -60,10 +65,16 @@ const IceCream = () => {
 
   const onDelete = async () => {
     if (menuItem) {
+      setLoadingMessage('Deleting ice cream...');
+      setDoneLoadingMessage('Done deleting ice cream, redirecting to home page.');
+      setIsLoading(true);
       const isSuccess = await deleteMenuItem(menuItem.id);
 
       if (isSuccess) {
-        navigate('/');
+        setIsLoading(false);
+        setTimeout(() => {
+          setDoRedirectToHomePage(true);
+        }, 400);
       }
     }
   };
@@ -71,7 +82,12 @@ const IceCream = () => {
   return (
     <section>
       <h2 className="main-heading">Update this beauty</h2>
-      <LoadingSpinner loadingMessage={`Loading ice cream...`} isLoading={isLoading}></LoadingSpinner>
+      {doRedirectToHomePage && <Navigate to="/"></Navigate>}
+      <LoadingSpinner
+        loadingMessage={loadingMessage}
+        doneLoadingMessage={doneLoadingMessage}
+        isLoading={isLoading}
+      ></LoadingSpinner>
       {menuItem && (
         <div className="form-frame">
           <div className="image-container">
