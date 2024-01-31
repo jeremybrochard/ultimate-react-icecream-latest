@@ -1,14 +1,19 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import IceCreamImage from '../components/IceCreamImage';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getMenuItem, updateMenuItem } from '../data/ice-cream-data';
+import {
+  deleteMenuItem,
+  getMenuItem,
+  updateMenuItem,
+} from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
 
 const IceCream = () => {
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -53,10 +58,20 @@ const IceCream = () => {
     }
   };
 
+  const onDelete = async () => {
+    if (menuItem) {
+      const isSuccess = await deleteMenuItem(menuItem.id);
+
+      if (isSuccess) {
+        navigate('/');
+      }
+    }
+  };
+
   return (
     <section>
       <h2 className="main-heading">Update this beauty</h2>
-      <LoadingSpinner isLoading={isLoading}></LoadingSpinner>
+      <LoadingSpinner loadingMessage={`Loading ice cream...`} isLoading={isLoading}></LoadingSpinner>
       {menuItem && (
         <div className="form-frame">
           <div className="image-container">
@@ -111,7 +126,7 @@ const IceCream = () => {
                 <button className="ok" type="submit">
                   Save
                 </button>
-                <button className="warning" type="button">
+                <button className="warning" type="button" onClick={onDelete}>
                   Delete
                 </button>
               </div>

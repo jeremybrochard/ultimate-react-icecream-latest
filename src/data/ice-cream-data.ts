@@ -16,3 +16,8 @@ export const updateMenuItem = async (item: MenuItem): Promise<MenuItem> => {
   const { data } = (await axios.put(`/api/menu/${item.id}`, item)) as { data: MenuItem };
   return data;
 };
+
+export const deleteMenuItem = async (id: number): Promise<boolean> => {
+  const { status } = await axios.delete(`/api/menu/${id}`);
+  return status === 204;
+};
