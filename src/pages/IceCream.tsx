@@ -1,22 +1,14 @@
+import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { MenuItem } from '../models/menu-item';
-import { useEffect, useState } from 'react';
 import IceCreamImage from '../components/IceCreamImage';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getIceCream } from '../data/ice-cream-data';
+import { getMenuItem, updateMenuItem } from '../data/ice-cream-data';
+import { MenuItem } from '../models/menu-item';
 
 const IceCream = () => {
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const loadIceCream = async (id: number): Promise<void> => {
-    const menuItem = await getIceCream(id);
-    if (menuItem) {
-      setMenuItem({ ...menuItem });
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (id) {
@@ -24,7 +16,18 @@ const IceCream = () => {
     }
   }, [id]);
 
-  const onFormValueChange = (event: any) => {
+  const loadIceCream = async (id: number): Promise<void> => {
+    const menuItem = await getMenuItem(id);
+    if (menuItem) {
+      setMenuItem({ ...menuItem });
+      setIsLoading(false);
+    }
+  };
+
+  const onFormValueChange = (
+    event: any,
+    type: 'string' | 'number' = 'string'
+  ) => {
     if (!menuItem) {
       return;
     }
@@ -35,8 +38,19 @@ const IceCream = () => {
     }
     setMenuItem({
       ...menuItem,
-      [event.target.name]: value,
+      [event.target.name]: type === 'string' ? value : +value,
     });
+  };
+
+  const onFormSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    console.log(menuItem);
+    setIsLoading(true);
+    if (menuItem) {
+      const updatedIceCream = await updateMenuItem(menuItem);
+      setMenuItem({ ...updatedIceCream });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,7 +63,7 @@ const IceCream = () => {
             <IceCreamImage iceCreamId={menuItem.iceCream.id}></IceCreamImage>
           </div>
           <div className="form-container">
-            <form>
+            <form onSubmit={onFormSubmit}>
               <label htmlFor="iceCreamName">Name :</label>
               <span id="iceCreamName" className="">
                 {menuItem.iceCream.name}
@@ -77,7 +91,7 @@ const IceCream = () => {
                 id="quantity"
                 name="quantity"
                 value={menuItem.quantity}
-                onChange={onFormValueChange}
+                onChange={(event) => onFormValueChange(event, 'number')}
               >
                 <option>0</option>
                 <option>10</option>
@@ -91,11 +105,15 @@ const IceCream = () => {
                 id="price"
                 name="price"
                 value={menuItem.price}
-                onChange={onFormValueChange}
+                onChange={(event) => onFormValueChange(event, 'number')}
               ></input>
               <div className="button-container">
-                <button className="ok">Save</button>
-                <button className="warning">Delete</button>
+                <button className="ok" type="submit">
+                  Save
+                </button>
+                <button className="warning" type="button">
+                  Delete
+                </button>
               </div>
             </form>
           </div>

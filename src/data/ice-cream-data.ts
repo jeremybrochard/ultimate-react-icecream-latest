@@ -7,7 +7,12 @@ export const getMenu = async (): Promise<MenuItem[]> => {
   return data.sort(sortIceCreamList);
 };
 
-export const getIceCream = async (id: number): Promise<MenuItem> => {
+export const getMenuItem = async (id: number): Promise<MenuItem> => {
   const { data } = (await axios.get(`/api/menu/${id}`)) as { data: MenuItem };
+  return data;
+};
+
+export const updateMenuItem = async (item: MenuItem): Promise<MenuItem> => {
+  const { data } = (await axios.put(`/api/menu/${item.id}`, item)) as { data: MenuItem };
   return data;
 };
