@@ -5,6 +5,7 @@ import Footer from './components/structure/Footer';
 import { Route, Routes } from 'react-router-dom';
 import Menu from './pages/Menu';
 import IceCream from './pages/IceCream';
+import IceCreamsList from './pages/IceCreamsList';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <main>
         <Routes>
           <Route path='/' Component={Menu}></Route>
+          <Route path='/ice-creams' Component={IceCreamsList} ></Route>
           <Route path='/ice-creams/:id' Component={IceCream} ></Route>
         </Routes>
       </main>

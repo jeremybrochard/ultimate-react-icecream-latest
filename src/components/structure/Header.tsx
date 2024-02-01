@@ -8,7 +8,7 @@ const NAVBAR_ITEMS = [
   },
   {
     title: 'Add Ice Cream',
-    path: '/new-ice-cream',
+    path: '/ice-creams',
   },
 ];
 
