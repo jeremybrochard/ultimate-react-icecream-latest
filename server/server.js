@@ -104,7 +104,9 @@ const getAvailableStock = () =>
   );
 
 app.get('/api/menu/stock-ice-creams', (req, res) => {
-  res.send(getAvailableStock());
+  setTimeout(() => {
+    res.send(getAvailableStock());
+  }, 3000);
 });
 
 app.get('/api/menu/stock-ice-creams/:id', (req, res) => {

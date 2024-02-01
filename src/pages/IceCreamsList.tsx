@@ -4,13 +4,13 @@ import MenuCard from '../components/menu/MenuCard';
 import MenuCardHeader from '../components/menu/MenuCardHeader';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { IceCream } from '../models/ice-cream';
+import PageSection from '../components/structure/PageSection';
 
 const IceCreamsList = () => {
   const data = useLoaderData() as { iceCreamsList: Promise<IceCream[]> };
 
   return (
-    <section>
-      <h2 className="main-heading">Choose your poison and enjoy!</h2>
+    <PageSection title="Choose your poison and enjoy!">
       <Suspense
         fallback={
           <LoadingSpinner
@@ -46,7 +46,7 @@ const IceCreamsList = () => {
           }
         </Await>
       </Suspense>
-    </section>
+    </PageSection>
   );
 };
 
