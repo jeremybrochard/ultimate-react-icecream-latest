@@ -1,22 +1,15 @@
-import React, { Fragment } from 'react';
-import './styles/ice-cream.scss';
-import Header from './components/structure/Header';
+import { Fragment } from 'react';
 import Footer from './components/structure/Footer';
-import { Route, Routes } from 'react-router-dom';
-import Menu from './pages/Menu';
-import IceCream from './pages/IceCream';
-import IceCreamsList from './pages/IceCreamsList';
+import Header from './components/structure/Header';
+import './styles/ice-cream.scss';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <Fragment>
       <Header></Header>
       <main>
-        <Routes>
-          <Route path='/' Component={Menu}></Route>
-          <Route path='/ice-creams' Component={IceCreamsList} ></Route>
-          <Route path='/ice-creams/:id' Component={IceCream} ></Route>
-        </Routes>
+        <Outlet />
       </main>
       <Footer></Footer>
     </Fragment>

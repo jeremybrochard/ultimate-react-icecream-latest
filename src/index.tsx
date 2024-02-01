@@ -1,10 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { getAvailableStock } from './data/ice-cream-data';
+import IceCreamsList from './pages/IceCreamsList';
+import IceCream from './pages/IceCream';
+import Menu from './pages/Menu';
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '',
+        element: <Menu />,
+      },
+      {
+        path: 'ice-creams',
+        element: <IceCreamsList />,
+        loader: getAvailableStock,
+      },
+      {
+        path: 'ice-creams/:id',
+        element: <IceCream />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,9 +37,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </HelmetProvider>
   </React.StrictMode>
 );
