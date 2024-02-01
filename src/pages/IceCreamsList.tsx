@@ -48,7 +48,7 @@ const IceCreamsList = () => {
         <ul className="container">
           {iceCreamsList.map((iceCream) => (
             <li key={iceCream.id.toString()}>
-              <MenuCard menuItem={iceCream} showCardContent={false}></MenuCard>
+              <MenuCard menuItem={iceCream}></MenuCard>
             </li>
           ))}
         </ul>
