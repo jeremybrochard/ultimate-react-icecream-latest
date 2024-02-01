@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import MenuCard from '../components/menu/MenuCard';
 import MenuCardContent from '../components/menu/MenuCardContent';
-import MenuCardHeader from '../components/menu/MenuCardHeader';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
 import { getMenu } from '../data/ice-cream-data';
@@ -40,11 +40,9 @@ const Menu = () => {
           {menuItems.map((item) => (
             <li key={item.id.toString()}>
               <MenuCard iceCream={item.iceCream}>
-                <MenuCardHeader
-                  iceCreamName={item.iceCream.name}
-                  id={item.id}
-                  action="edit"
-                ></MenuCardHeader>
+                <Link to={`/ice-creams/${item.id}`}>
+                  <h3>{item.iceCream.name}</h3>
+                </Link>
                 <MenuCardContent menuItem={item}></MenuCardContent>
               </MenuCard>
             </li>

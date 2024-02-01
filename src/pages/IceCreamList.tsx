@@ -1,12 +1,11 @@
 import { Suspense } from 'react';
-import { Await, useLoaderData } from 'react-router-dom';
+import { Await, Link, useLoaderData } from 'react-router-dom';
 import MenuCard from '../components/menu/MenuCard';
-import MenuCardHeader from '../components/menu/MenuCardHeader';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
-import { IceCream } from '../models/ice-cream';
 import PageSection from '../components/structure/PageSection';
+import { IceCream } from '../models/ice-cream';
 
-const IceCreamsList = () => {
+const IceCreamList = () => {
   const data = useLoaderData() as { iceCreamsList: Promise<IceCream[]> };
 
   return (
@@ -32,11 +31,9 @@ const IceCreamsList = () => {
                   {iceCreamsList.map((iceCream) => (
                     <li key={iceCream.id.toString()}>
                       <MenuCard iceCream={iceCream}>
-                        <MenuCardHeader
-                          iceCreamName={iceCream.name}
-                          id={iceCream.id}
-                          action="add"
-                        ></MenuCardHeader>
+                        <Link to={`/ice-creams/add?iceCreamId${iceCream.id}`}>
+                          <h3>{iceCream.name}</h3>
+                        </Link>
                       </MenuCard>
                     </li>
                   ))}
@@ -50,4 +47,4 @@ const IceCreamsList = () => {
   );
 };
 
-export default IceCreamsList;
+export default IceCreamList;

@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter, defer } from 'react-router-dom';
 import { getAvailableStock } from './data/ice-cream-data';
-import IceCreamsList from './pages/IceCreamsList';
-import IceCream from './pages/IceCream';
+import IceCreamList from './pages/IceCreamList';
+import IceCreamUpdate from './pages/IceCreamUpdate';
 import Menu from './pages/Menu';
 
 const router = createBrowserRouter([
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'ice-creams',
-        element: <IceCreamsList />,
+        element: <IceCreamList />,
         loader: async() => {
           const iceCreamsListPromise = getAvailableStock();
           return defer({
@@ -29,8 +29,9 @@ const router = createBrowserRouter([
       },
       {
         path: 'ice-creams/:id',
-        element: <IceCream />,
+        element: <IceCreamUpdate />,
       },
+      
     ],
   },
 ]);

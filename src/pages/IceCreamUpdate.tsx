@@ -10,7 +10,7 @@ import {
 import { MenuItem } from '../models/menu-item';
 import PageSection from '../components/structure/PageSection';
 
-const IceCream = () => {
+const IceCreamUpdate = () => {
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
   const [isLoading, setIsLoading] = useState(true);
@@ -156,4 +156,4 @@ const IceCream = () => {
   );
 };
 
-export default IceCream;
+export default IceCreamUpdate;
