@@ -2,8 +2,8 @@ import { Fragment, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { getMenu } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
-import LoadingSpinner from './LoadingSpinner';
-import MenuCard from './MenuCard';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
+import MenuCard from '../components/menu/MenuCard';
 
 const Menu = () => {
   const [iceCreamsList, setIceCreamsList] = useState([] as MenuItem[]);

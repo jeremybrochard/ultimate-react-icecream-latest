@@ -1,4 +1,4 @@
-import iceCreamImage from '../assets/img/ultimate-ice-cream.svg';
+import iceCreamImage from '../../assets/img/ultimate-ice-cream.svg';
 import Navbar from './Navbar';
 
 const NAVBAR_ITEMS = [

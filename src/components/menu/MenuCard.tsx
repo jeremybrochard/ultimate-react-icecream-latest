@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { MenuItem } from '../models/menu-item';
-import IceCreamImage from './IceCreamImage';
+import { MenuItem } from '../../models/menu-item';
+import IceCreamImage from '../shared/IceCreamImage';
 
 const MenuCard = ({ menuItem }: { menuItem: MenuItem }) => {
   return (

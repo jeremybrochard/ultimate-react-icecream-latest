@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import IceCreamImage from '../components/IceCreamImage';
-import LoadingSpinner from '../components/LoadingSpinner';
+import IceCreamImage from '../components/shared/IceCreamImage';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 import {
   deleteMenuItem,
   getMenuItem,

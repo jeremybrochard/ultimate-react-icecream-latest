@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import './styles/ice-cream.scss';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/structure/Header';
+import Footer from './components/structure/Footer';
 import { Route, Routes } from 'react-router-dom';
-import Menu from './components/Menu';
+import Menu from './pages/Menu';
 import IceCream from './pages/IceCream';
 
 function App() {
