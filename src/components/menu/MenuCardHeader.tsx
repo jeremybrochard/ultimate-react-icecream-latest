@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom';
-import { IceCream } from '../../models/ice-cream';
 
 export interface MenuCardHeaderParams {
-  menuItemId?: number;
-  iceCream: IceCream;
+  id: number;
+  iceCreamName: string;
+  action: 'add' | 'edit';
 }
 
-const MenuCardHeader = ({ menuItemId, iceCream }: MenuCardHeaderParams) => (
+const MenuCardHeader = ({ id, iceCreamName, action }: MenuCardHeaderParams) => (
   <Link
     to={
-      menuItemId
-        ? `/ice-creams/${menuItemId}`
-        : `/ice-creams/add?iceCreamId${iceCream.id}`
+      action === 'edit'
+        ? `/ice-creams/${id}`
+        : `/ice-creams/add?iceCreamId${id}`
     }
   >
-    <h3>{iceCream.name}</h3>
+    <h3>{iceCreamName}</h3>
   </Link>
 );
 

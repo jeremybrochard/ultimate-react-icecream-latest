@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import MenuCard from '../components/menu/MenuCard';
+import MenuCardContent from '../components/menu/MenuCardContent';
+import MenuCardHeader from '../components/menu/MenuCardHeader';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
 import { getMenu } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
 
 const Menu = () => {
-  const [iceCreamsList, setIceCreamsList] = useState([] as MenuItem[]);
+  const [menuItems, setMenuItems] = useState([] as MenuItem[]);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadData = async (isMounted: boolean) => {
     const data = await getMenu();
     if (isMounted) {
-      setIceCreamsList([...data]);
+      setMenuItems([...data]);
       setIsLoading(false);
     }
   };
@@ -33,11 +35,18 @@ const Menu = () => {
         doneLoadingMessage="Done Loading menu."
         isLoading={isLoading}
       ></LoadingSpinner>
-      {iceCreamsList.length > 0 && (
+      {menuItems.length > 0 && (
         <ul className="container">
-          {iceCreamsList.map((iceCream) => (
-            <li key={iceCream.id.toString()}>
-              <MenuCard menuItem={iceCream}></MenuCard>
+          {menuItems.map((item) => (
+            <li key={item.id.toString()}>
+              <MenuCard iceCream={item.iceCream}>
+                <MenuCardHeader
+                  iceCreamName={item.iceCream.name}
+                  id={item.id}
+                  action="edit"
+                ></MenuCardHeader>
+                <MenuCardContent menuItem={item}></MenuCardContent>
+              </MenuCard>
             </li>
           ))}
         </ul>

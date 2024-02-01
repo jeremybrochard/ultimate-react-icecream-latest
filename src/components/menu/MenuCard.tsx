@@ -1,18 +1,18 @@
-import { MenuItem } from '../../models/menu-item';
+import { IceCream } from '../../models/ice-cream';
 import IceCreamImage from '../shared/IceCreamImage';
-import MenuCardContent from './MenuCardContent';
-import MenuCardHeader from './MenuCardHeader';
 
-const MenuCard = ({ menuItem }: { menuItem: MenuItem }) => {
+export interface MenuCardParams {
+  iceCream: IceCream;
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const MenuCard = ({ iceCream, children }: MenuCardParams) => {
   return (
     <section className="card">
       <div className="image-container">
-        <IceCreamImage iceCreamId={menuItem.iceCream.id} />
+        <IceCreamImage iceCreamId={iceCream.id} />
       </div>
-      <div className="text-container">
-        <MenuCardHeader menuItemId={menuItem.id} iceCream={menuItem.iceCream} />
-        <MenuCardContent menuItem={menuItem} />
-      </div>
+      <div className="text-container">{children}</div>
     </section>
   );
 };

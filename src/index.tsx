@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, defer } from 'react-router-dom';
 import { getAvailableStock } from './data/ice-cream-data';
 import IceCreamsList from './pages/IceCreamsList';
 import IceCream from './pages/IceCream';
@@ -21,7 +21,11 @@ const router = createBrowserRouter([
       {
         path: 'ice-creams',
         element: <IceCreamsList />,
-        loader: getAvailableStock,
+        loader: async() => {
+          const iceCreamsListPromise = getAvailableStock();
+          return defer({
+            iceCreamsList: iceCreamsListPromise
+        })}
       },
       {
         path: 'ice-creams/:id',
