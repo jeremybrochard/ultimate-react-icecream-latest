@@ -8,6 +8,7 @@ import {
   updateMenuItem,
 } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
+import PageSection from '../components/structure/PageSection';
 
 const IceCream = () => {
   const { id } = useParams();
@@ -66,7 +67,9 @@ const IceCream = () => {
   const onDelete = async () => {
     if (menuItem) {
       setLoadingMessage('Deleting ice cream...');
-      setDoneLoadingMessage('Done deleting ice cream, redirecting to home page.');
+      setDoneLoadingMessage(
+        'Done deleting ice cream, redirecting to home page.'
+      );
       setIsLoading(true);
       const isSuccess = await deleteMenuItem(menuItem.id);
 
@@ -80,8 +83,7 @@ const IceCream = () => {
   };
 
   return (
-    <section>
-      <h2 className="main-heading">Update this beauty</h2>
+    <PageSection title="Update this beauty">
       {doRedirectToHomePage && <Navigate to="/"></Navigate>}
       <LoadingSpinner
         loadingMessage={loadingMessage}
@@ -150,7 +152,7 @@ const IceCream = () => {
           </div>
         </div>
       )}
-    </section>
+    </PageSection>
   );
 };
 

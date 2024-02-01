@@ -1,9 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
+import MenuCard from '../components/menu/MenuCard';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
+import PageSection from '../components/structure/PageSection';
 import { getMenu } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
-import LoadingSpinner from '../components/shared/LoadingSpinner';
-import MenuCard from '../components/menu/MenuCard';
 
 const Menu = () => {
   const [iceCreamsList, setIceCreamsList] = useState([] as MenuItem[]);
@@ -27,13 +27,7 @@ const Menu = () => {
   }, []);
 
   return (
-    <Fragment>
-      <Helmet>
-        <title>
-          Rock your taste buds with one of these! | Ultimate Ice Cream
-        </title>
-      </Helmet>
-      <h2 className="main-heading">Rock your taste buds with one of these!</h2>
+    <PageSection title="Rock your taste buds with one of these!">
       <LoadingSpinner
         loadingMessage="Loading ice cream menu..."
         doneLoadingMessage="Done Loading menu."
@@ -48,7 +42,7 @@ const Menu = () => {
           ))}
         </ul>
       )}
-    </Fragment>
+    </PageSection>
   );
 };
 
