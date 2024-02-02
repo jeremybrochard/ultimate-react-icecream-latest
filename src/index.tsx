@@ -8,6 +8,7 @@ import { getAvailableStock } from './data/ice-cream-data';
 import IceCreamList from './pages/IceCreamList';
 import IceCreamUpdate from './pages/IceCreamUpdate';
 import Menu from './pages/Menu';
+import IceCreamAdd from './pages/IceCreamAdd';
 
 const router = createBrowserRouter([
   {
@@ -28,10 +29,13 @@ const router = createBrowserRouter([
         })}
       },
       {
+        path: 'ice-creams/add',
+        element: <IceCreamAdd />,
+      },
+      {
         path: 'ice-creams/:id',
         element: <IceCreamUpdate />,
       },
-      
     ],
   },
 ]);

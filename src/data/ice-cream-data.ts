@@ -15,8 +15,20 @@ export const getAvailableStock = async (): Promise<IceCream[]> => {
   return data.sort(sortIceCreams);
 };
 
+export const getIceCream = async(id: number): Promise<IceCream> => {
+  const { data } = (await axios.get(`/api/menu/stock-ice-creams/${id}`)) as { data: IceCream };
+  return data;
+};
+
 export const getMenuItem = async (id: number): Promise<MenuItem> => {
   const { data } = (await axios.get(`/api/menu/${id}`)) as { data: MenuItem };
+  return data;
+};
+
+export const addMenuItem = async (item: MenuItem): Promise<MenuItem> => {
+  const { data } = (await axios.post(`/api/menu`, item)) as {
+    data: MenuItem;
+  };
   return data;
 };
 
