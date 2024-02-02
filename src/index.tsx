@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter, defer } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter, defer } from 'react-router-dom';
 import { getAvailableStock } from './data/ice-cream-data';
 import IceCreamList from './pages/IceCreamList';
 import IceCreamUpdate from './pages/IceCreamUpdate';
@@ -36,6 +36,10 @@ const router = createBrowserRouter([
         path: 'ice-creams/:id',
         element: <IceCreamUpdate />,
       },
+      {
+        path: '*',
+        element: <Navigate to="/"/>
+      }
     ],
   },
 ]);
