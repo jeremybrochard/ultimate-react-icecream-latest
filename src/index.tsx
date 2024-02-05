@@ -3,7 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Navigate, RouterProvider, createBrowserRouter, defer } from 'react-router-dom';
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+  defer,
+} from 'react-router-dom';
 import { getAvailableStock } from './data/ice-cream-data';
 import IceCreamList from './pages/IceCreamList';
 import IceCreamUpdate from './pages/IceCreamUpdate';
@@ -22,11 +27,12 @@ const router = createBrowserRouter([
       {
         path: 'ice-creams',
         element: <IceCreamList />,
-        loader: async() => {
+        loader: async () => {
           const iceCreamsListPromise = getAvailableStock();
           return defer({
-            iceCreamsList: iceCreamsListPromise
-        })}
+            iceCreamsList: iceCreamsListPromise,
+          });
+        },
       },
       {
         path: 'ice-creams/add',
@@ -38,8 +44,8 @@ const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <Navigate to="/"/>
-      }
+        element: <Navigate to="/" state={{ focus: true }} />,
+      },
     ],
   },
 ]);

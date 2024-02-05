@@ -5,10 +5,16 @@ const NAVBAR_ITEMS = [
   {
     title: 'Menu',
     path: '/',
+    state: {
+      focus: true,
+    },
   },
   {
     title: 'Add Ice Cream',
     path: '/ice-creams',
+    state: {
+      focus: true,
+    },
   },
 ];
 

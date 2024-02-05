@@ -7,8 +7,11 @@ import { Outlet } from 'react-router-dom';
 function App() {
   return (
     <Fragment>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <Header></Header>
-      <main>
+      <main tabIndex={-1} id="main">
         <Outlet />
       </main>
       <Footer></Footer>

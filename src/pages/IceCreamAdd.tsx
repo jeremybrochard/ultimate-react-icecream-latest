@@ -2,11 +2,12 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import PageSection from '../components/structure/PageSection';
 import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
 import { IceCream } from '../models/ice-cream';
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { addMenuItem, getIceCream } from '../data/ice-cream-data';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 
 const IceCreamAdd = () => {
+  const isMounted = useRef(true);
   let [searchParams] = useSearchParams();
   const [iceCream, setIceCream] = useState(null as IceCream | null);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,15 +16,23 @@ const IceCreamAdd = () => {
   const [doRedirect, setDoRedirect] = useState(false);
 
   useEffect(() => {
+    isMounted.current = true;
     const id = searchParams.get('iceCreamId');
     if (id) {
-      loadIceCream(+id);
+      loadIceCream(+id, isMounted);
     }
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [searchParams]);
 
-  const loadIceCream = async (id: number): Promise<void> => {
+  const loadIceCream = async (
+    id: number,
+    isMounted: MutableRefObject<boolean>
+  ): Promise<void> => {
     const iceCream = await getIceCream(id);
-    if (iceCream) {
+    if (iceCream && isMounted.current) {
       setIceCream({ ...iceCream });
       setIsLoading(false);
     }
@@ -52,7 +61,7 @@ const IceCreamAdd = () => {
 
   return (
     <PageSection title="Add ice cream to menu">
-      {doRedirect && <Navigate to="/"></Navigate>}
+      {doRedirect && <Navigate to="/" state={{ focus: true }}></Navigate>}
       <LoadingSpinner
         loadingMessage={loadingMessage}
         doneLoadingMessage={doneLoadingMessage}

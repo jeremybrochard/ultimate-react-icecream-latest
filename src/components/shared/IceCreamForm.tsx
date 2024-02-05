@@ -2,6 +2,8 @@ import { FormEvent, ReactNode, useState } from 'react';
 import IceCreamImage from './IceCreamImage';
 import { MenuItem } from '../../models/menu-item';
 import { IceCream } from '../../models/ice-cream';
+import '../../styles/form-spacer.scss';
+import { useUniqueIds } from '../../hooks/useUniqueIds';
 
 export interface FormState {
   description: string;
@@ -46,6 +48,8 @@ const IceCreamForm = ({
     initialState ? setFormInitialState(initialState) : INITIAL_FORM_STATE
   );
 
+  const [descriptionId, inStockId, quantityId, priceId] = useUniqueIds(4);
+
   const onFormValueChange = (
     event: any,
     type: 'string' | 'number' = 'string'
@@ -58,6 +62,7 @@ const IceCreamForm = ({
     if (event.target.type === 'checkbox') {
       value = event.target.checked;
     }
+
     setFormState({
       ...formState,
       [event.target.name]: type === 'string' ? value : +value,
@@ -66,7 +71,7 @@ const IceCreamForm = ({
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
-    onFormSubmit(formState);
+    onFormSubmit({ ...formState});
   };
 
   return (
@@ -75,45 +80,49 @@ const IceCreamForm = ({
         <IceCreamImage iceCreamId={iceCream.id}></IceCreamImage>
       </div>
       <div className="form-container">
+        <dl>
+          <dt>Name :</dt>
+          <dd>{iceCream.name}</dd>
+        </dl>
         <form onSubmit={submitForm}>
-          <label htmlFor="iceCreamName">Name :</label>
-          <input id="iceCreamName" readOnly value={iceCream.name}></input>
-          <label htmlFor="description">Description* :</label>
+          <label htmlFor={descriptionId}>Description* :</label>
           <textarea
-            id="description"
+            id={descriptionId}
             name="description"
             value={formState.description}
             onChange={onFormValueChange}
           ></textarea>
-          <label htmlFor="inStock">In Stock :</label>
+          <label htmlFor={inStockId}>In Stock :</label>
           <div className="checkbox-wrapper">
             <input
               type="checkbox"
-              id="inStock"
+              id={inStockId}
               name="inStock"
               checked={formState.inStock}
               onChange={onFormValueChange}
             ></input>
             <div className="checkbox-wrapper-checked"></div>
           </div>
-          <label htmlFor="quantity">Quantity :</label>
+          <label htmlFor={quantityId}>Quantity :</label>
           <select
-            id="quantity"
+            id={quantityId}
             name="quantity"
             value={formState.quantity}
             onChange={(event) => onFormValueChange(event, 'number')}
           >
-            <option>0</option>
-            <option>10</option>
-            <option>20</option>
-            <option>30</option>
-            <option>40</option>
-            <option>50</option>
+            <option value="0">0</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
           </select>
-          <label htmlFor="price">Price* :</label>
+          <label htmlFor={priceId}>Price* :</label>
           <input
-            id="price"
+            id={priceId}
             name="price"
+            type="number"
+            step="0.01"
             value={formState.price}
             onChange={(event) => onFormValueChange(event, 'number')}
           ></input>

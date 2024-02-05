@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
@@ -11,6 +11,7 @@ import {
 import { MenuItem } from '../models/menu-item';
 
 const IceCreamUpdate = () => {
+  const isMounted = useRef(true);
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,14 +22,22 @@ const IceCreamUpdate = () => {
   const [doRedirectToHomePage, setDoRedirectToHomePage] = useState(false);
 
   useEffect(() => {
+    isMounted.current = true;
     if (id) {
-      loadIceCream(+id);
+      loadIceCream(+id, isMounted);
     }
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [id]);
 
-  const loadIceCream = async (id: number): Promise<void> => {
+  const loadIceCream = async (
+    id: number,
+    isMounted: MutableRefObject<boolean>
+  ): Promise<void> => {
     const menuItem = await getMenuItem(id);
-    if (menuItem) {
+    if (menuItem && isMounted.current) {
       setMenuItem({ ...menuItem });
       setIsLoading(false);
     }
@@ -50,7 +59,7 @@ const IceCreamUpdate = () => {
         description,
         inStock,
         price,
-        quantity
+        quantity,
       });
       setMenuItem({ ...updatedIceCream });
       setIsLoading(false);
@@ -80,13 +89,15 @@ const IceCreamUpdate = () => {
 
   return (
     <PageSection title="Update this beauty">
-      {doRedirectToHomePage && <Navigate to="/"></Navigate>}
+      {doRedirectToHomePage && (
+        <Navigate to="/" state={{ focus: true }}></Navigate>
+      )}
       <LoadingSpinner
         loadingMessage={loadingMessage}
         doneLoadingMessage={doneLoadingMessage}
         isLoading={isLoading}
       ></LoadingSpinner>
-      {menuItem && (
+      {!isLoading && menuItem && (
         <IceCreamForm
           initialState={menuItem}
           iceCream={menuItem.iceCream}

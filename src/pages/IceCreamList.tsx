@@ -31,9 +31,14 @@ const IceCreamList = () => {
                   {iceCreamsList.map((iceCream) => (
                     <li key={iceCream.id.toString()}>
                       <MenuCard iceCream={iceCream}>
-                        <Link to={`/ice-creams/add?iceCreamId=${iceCream.id}`}>
-                          <h3>{iceCream.name}</h3>
-                        </Link>
+                        <h3>
+                          <Link
+                            to={`/ice-creams/add?iceCreamId=${iceCream.id}`}
+                            state={{ focus: true }}
+                          >
+                            {iceCream.name}
+                          </Link>
+                        </h3>
                       </MenuCard>
                     </li>
                   ))}

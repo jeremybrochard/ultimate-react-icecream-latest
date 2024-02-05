@@ -1,4 +1,6 @@
+import { MutableRefObject, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 export interface PageSectionParams {
   title: string;
@@ -13,7 +15,16 @@ const PageSection = ({
   shouldUpdatePageTitle = true,
   children,
 }: PageSectionParams) => {
+  const location = useLocation();
   const H = `h${headingLevel}` as any;
+  const titleRef = useRef(null) as MutableRefObject<HTMLElement | null>;
+
+  useEffect(() => {
+    if (titleRef.current && location.state && location.state.focus) {
+      titleRef.current.focus();
+    }
+    window.scrollTo(0, 0);
+  }, [location.state]);
 
   return (
     <>
@@ -23,7 +34,9 @@ const PageSection = ({
         </Helmet>
       )}
       <section>
-        <H className="main-heading">{title}</H>
+        <H tabIndex={-1} ref={titleRef} className="main-heading">
+          {title}
+        </H>
         {children}
       </section>
     </>
