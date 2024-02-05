@@ -1,9 +1,9 @@
 import { FormEvent, ReactNode, useState } from 'react';
-import IceCreamImage from './IceCreamImage';
-import { MenuItem } from '../../models/menu-item';
-import { IceCream } from '../../models/ice-cream';
-import '../../styles/form-spacer.scss';
 import { useUniqueIds } from '../../hooks/useUniqueIds';
+import { IceCream } from '../../models/ice-cream';
+import { MenuItem } from '../../models/menu-item';
+import '../../styles/form-spacer.scss';
+import IceCreamImage from './IceCreamImage';
 
 export interface FormState {
   description: string;
@@ -50,6 +50,24 @@ const IceCreamForm = ({
 
   const [descriptionId, inStockId, quantityId, priceId] = useUniqueIds(4);
 
+  const onInStockValueChange = (event: any) => {
+    const inStock = event.target.checked;
+    setFormState({
+      ...formState,
+      inStock,
+      quantity: !inStock ? 0 : formState.quantity,
+    });
+  };
+
+  const onQuantityValueChange = (event: any) => {
+    const quantity = +event.target.value;
+    setFormState({
+      ...formState,
+      quantity,
+      inStock: quantity !== 0,
+    });
+  };
+
   const onFormValueChange = (
     event: any,
     type: 'string' | 'number' = 'string'
@@ -59,10 +77,6 @@ const IceCreamForm = ({
     }
     let value = event.target.value;
 
-    if (event.target.type === 'checkbox') {
-      value = event.target.checked;
-    }
-
     setFormState({
       ...formState,
       [event.target.name]: type === 'string' ? value : +value,
@@ -71,7 +85,7 @@ const IceCreamForm = ({
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
-    onFormSubmit({ ...formState});
+    onFormSubmit({ ...formState });
   };
 
   return (
@@ -99,7 +113,7 @@ const IceCreamForm = ({
               id={inStockId}
               name="inStock"
               checked={formState.inStock}
-              onChange={onFormValueChange}
+              onChange={onInStockValueChange}
             ></input>
             <div className="checkbox-wrapper-checked"></div>
           </div>
@@ -108,7 +122,7 @@ const IceCreamForm = ({
             id={quantityId}
             name="quantity"
             value={formState.quantity}
-            onChange={(event) => onFormValueChange(event, 'number')}
+            onChange={onQuantityValueChange}
           >
             <option value="0">0</option>
             <option value="10">10</option>
