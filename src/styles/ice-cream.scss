@@ -587,6 +587,7 @@ main {
           textarea {
             border: 1px solid #d8474f;
             background-color: rgba(216, 71, 79, 0.07);
+            margin-bottom: 0;
 
             &:focus {
               box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(216, 71, 79, 1);

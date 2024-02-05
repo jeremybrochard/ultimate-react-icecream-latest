@@ -2,8 +2,14 @@ import { FormEvent, ReactNode, useState } from 'react';
 import { useUniqueIds } from '../../hooks/useUniqueIds';
 import { IceCream } from '../../models/ice-cream';
 import { MenuItem } from '../../models/menu-item';
-import '../../styles/form-spacer.scss';
 import IceCreamImage from './IceCreamImage';
+import useValidation from '../../hooks/useValidation';
+import {
+  validateDescription,
+  validatePrice,
+  validateQuantity,
+} from '../../utils/validators';
+import ErrorContainer from './ErrorContainer';
 
 export interface FormState {
   description: string;
@@ -47,8 +53,19 @@ const IceCreamForm = ({
   const [formState, setFormState] = useState(
     initialState ? setFormInitialState(initialState) : INITIAL_FORM_STATE
   );
-
+  const [hasFormBeingSubmitted, setHasFormBeingSubmitted] = useState(false);
   const [descriptionId, inStockId, quantityId, priceId] = useUniqueIds(4);
+
+  const descriptionError = useValidation(
+    formState.description,
+    validateDescription
+  );
+  const quantityError = useValidation(
+    formState.quantity,
+    validateQuantity,
+    formState.inStock
+  );
+  const priceError = useValidation(formState.price, validatePrice);
 
   const onInStockValueChange = (event: any) => {
     const inStock = event.target.checked;
@@ -85,7 +102,11 @@ const IceCreamForm = ({
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
-    onFormSubmit({ ...formState });
+    setHasFormBeingSubmitted(true);
+
+    if (!descriptionError && !quantityError && !priceError) {
+      onFormSubmit({ ...formState });
+    }
   };
 
   return (
@@ -100,12 +121,17 @@ const IceCreamForm = ({
         </dl>
         <form onSubmit={submitForm}>
           <label htmlFor={descriptionId}>Description* :</label>
-          <textarea
-            id={descriptionId}
-            name="description"
-            value={formState.description}
-            onChange={onFormValueChange}
-          ></textarea>
+          <ErrorContainer
+            errorMessage={descriptionError}
+            showError={hasFormBeingSubmitted}
+          >
+            <textarea
+              id={descriptionId}
+              name="description"
+              value={formState.description}
+              onChange={onFormValueChange}
+            ></textarea>
+          </ErrorContainer>
           <label htmlFor={inStockId}>In Stock :</label>
           <div className="checkbox-wrapper">
             <input
@@ -118,28 +144,38 @@ const IceCreamForm = ({
             <div className="checkbox-wrapper-checked"></div>
           </div>
           <label htmlFor={quantityId}>Quantity :</label>
-          <select
-            id={quantityId}
-            name="quantity"
-            value={formState.quantity}
-            onChange={onQuantityValueChange}
+          <ErrorContainer
+            errorMessage={quantityError}
+            showError={hasFormBeingSubmitted}
           >
-            <option value="0">0</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-          </select>
+            <select
+              id={quantityId}
+              name="quantity"
+              value={formState.quantity}
+              onChange={onQuantityValueChange}
+            >
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+            </select>
+          </ErrorContainer>
           <label htmlFor={priceId}>Price* :</label>
-          <input
-            id={priceId}
-            name="price"
-            type="number"
-            step="0.01"
-            value={formState.price}
-            onChange={(event) => onFormValueChange(event, 'number')}
-          ></input>
+          <ErrorContainer
+            errorMessage={priceError}
+            showError={hasFormBeingSubmitted}
+          >
+            <input
+              id={priceId}
+              name="price"
+              type="number"
+              step="0.01"
+              value={formState.price}
+              onChange={(event) => onFormValueChange(event, 'number')}
+            ></input>
+          </ErrorContainer>
           <div className="button-container">
             <button className="ok" type="submit">
               Save
