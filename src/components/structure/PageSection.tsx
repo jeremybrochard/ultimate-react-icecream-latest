@@ -33,12 +33,10 @@ const PageSection = ({
           <title>{title} | Ultimate Ice Cream</title>
         </Helmet>
       )}
-      <section>
-        <H tabIndex={-1} ref={titleRef} className="main-heading">
-          {title}
-        </H>
-        {children}
-      </section>
+      <H tabIndex={-1} ref={titleRef} className="main-heading">
+        {title}
+      </H>
+      {children}
     </>
   );
 };
