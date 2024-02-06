@@ -1,13 +1,15 @@
 import { Suspense } from 'react';
-import { Await, Link, useLoaderData } from 'react-router-dom';
+import { Await, useLoaderData, useNavigate } from 'react-router-dom';
 import MenuCard from '../components/menu/MenuCard';
+import MenuCardList from '../components/menu/MenuCardList';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
 import { IceCream } from '../models/ice-cream';
-import MenuCardList from '../components/menu/MenuCardList';
 
 const IceCreamList = () => {
   const data = useLoaderData() as { iceCreamsList: Promise<IceCream[]> };
+  const navigate = useNavigate();
+  const getLink = (id: number) => `/ice-creams/add?iceCreamId=${id}`;
 
   return (
     <PageSection title="Choose your poison and enjoy!">
@@ -30,16 +32,12 @@ const IceCreamList = () => {
                 </div>
                 <MenuCardList>
                   {iceCreamsList.map((iceCream) => (
-                    <MenuCard iceCream={iceCream} key={iceCream.id.toString()}>
-                      <h3>
-                        <Link
-                          to={`/ice-creams/add?iceCreamId=${iceCream.id}`}
-                          state={{ focus: true }}
-                        >
-                          {iceCream.name}
-                        </Link>
-                      </h3>
-                    </MenuCard>
+                    <MenuCard
+                      iceCream={iceCream}
+                      key={iceCream.id.toString()}
+                      linkTo={getLink(iceCream.id)}
+                      onClick={() => navigate(getLink(iceCream.id))}
+                    ></MenuCard>
                   ))}
                 </MenuCardList>
               </>
