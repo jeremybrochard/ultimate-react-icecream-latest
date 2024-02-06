@@ -1,12 +1,12 @@
 import { Navigate, useSearchParams } from 'react-router-dom';
-import PageSection from '../components/structure/PageSection';
+import PageContainer from '../components/structure/PageContainer';
 import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
 import { IceCream } from '../models/ice-cream';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { addMenuItem, getIceCream } from '../data/ice-cream-data';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 
-const IceCreamAdd = () => {
+const AddMenuItem = () => {
   const isMounted = useRef(true);
   let [searchParams] = useSearchParams();
   const [iceCream, setIceCream] = useState(null as IceCream | null);
@@ -60,7 +60,7 @@ const IceCreamAdd = () => {
   };
 
   return (
-    <PageSection title="Add ice cream to menu">
+    <PageContainer title="Add ice cream to menu">
       {doRedirect && <Navigate to="/" state={{ focus: true }}></Navigate>}
       <LoadingSpinner
         loadingMessage={loadingMessage}
@@ -73,8 +73,8 @@ const IceCreamAdd = () => {
           onFormSubmit={onFormSubmit}
         ></IceCreamForm>
       )}
-    </PageSection>
+    </PageContainer>
   );
 };
 
-export default IceCreamAdd;
+export default AddMenuItem;

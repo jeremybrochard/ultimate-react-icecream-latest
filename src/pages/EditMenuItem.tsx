@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
-import PageSection from '../components/structure/PageSection';
+import PageContainer from '../components/structure/PageContainer';
 import {
   deleteMenuItem,
   getMenuItem,
@@ -10,7 +10,7 @@ import {
 } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
 
-const IceCreamUpdate = () => {
+const EditMenuItem = () => {
   const isMounted = useRef(true);
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null as MenuItem | null);
@@ -96,7 +96,7 @@ const IceCreamUpdate = () => {
   };
 
   return (
-    <PageSection title="Update this beauty">
+    <PageContainer title="Update this beauty">
       {doRedirectToHomePage && (
         <Navigate to="/" state={{ focus: true }}></Navigate>
       )}
@@ -117,8 +117,8 @@ const IceCreamUpdate = () => {
           }
         ></IceCreamForm>
       )}
-    </PageSection>
+    </PageContainer>
   );
 };
 
-export default IceCreamUpdate;
+export default EditMenuItem;

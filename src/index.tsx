@@ -1,63 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
-import App from './App';
+import Root from './Root';
 import reportWebVitals from './reportWebVitals';
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-  defer,
-} from 'react-router-dom';
-import { getAvailableStock } from './data/ice-cream-data';
-import IceCreamList from './pages/IceCreamList';
-import IceCreamUpdate from './pages/IceCreamUpdate';
-import Menu from './pages/Menu';
-import IceCreamAdd from './pages/IceCreamAdd';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '',
-        element: <Menu />,
-      },
-      {
-        path: 'ice-creams',
-        element: <IceCreamList />,
-        loader: async () => {
-          const iceCreamsListPromise = getAvailableStock();
-          return defer({
-            iceCreamsList: iceCreamsListPromise,
-          });
-        },
-      },
-      {
-        path: 'ice-creams/add',
-        element: <IceCreamAdd />,
-      },
-      {
-        path: 'ice-creams/:id',
-        element: <IceCreamUpdate />,
-      },
-      {
-        path: '*',
-        element: <Navigate to="/" state={{ focus: true }} />,
-      },
-    ],
-  },
-]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <RouterProvider router={router} />
-    </HelmetProvider>
+    <Root />
   </React.StrictMode>
 );
 

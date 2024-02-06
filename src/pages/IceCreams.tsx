@@ -1,18 +1,18 @@
 import { Suspense } from 'react';
 import { Await, useLoaderData, useNavigate } from 'react-router-dom';
-import MenuCard from '../components/menu/MenuCard';
-import MenuCardList from '../components/menu/MenuCardList';
+import MenuCard from '../components/menu-card/MenuCard';
+import MenuCardList from '../components/menu-card/MenuCardList';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
-import PageSection from '../components/structure/PageSection';
+import PageContainer from '../components/structure/PageContainer';
 import { IceCream } from '../models/ice-cream';
 
-const IceCreamList = () => {
+const IceCreams = () => {
   const data = useLoaderData() as { iceCreamsList: Promise<IceCream[]> };
   const navigate = useNavigate();
-  const getLink = (id: number) => `/ice-creams/add?iceCreamId=${id}`;
+  const getLink = (id: number) => `/menu/add?iceCreamId=${id}`;
 
   return (
-    <PageSection title="Choose your poison and enjoy!">
+    <PageContainer title="Choose your poison and enjoy!">
       <Suspense
         fallback={
           <LoadingSpinner
@@ -45,8 +45,8 @@ const IceCreamList = () => {
           }
         </Await>
       </Suspense>
-    </PageSection>
+    </PageContainer>
   );
 };
 
-export default IceCreamList;
+export default IceCreams;

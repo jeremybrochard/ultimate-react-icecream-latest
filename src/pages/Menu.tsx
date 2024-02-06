@@ -1,9 +1,9 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MenuCard from '../components/menu/MenuCard';
-import MenuCardList from '../components/menu/MenuCardList';
+import MenuCard from '../components/menu-card/MenuCard';
+import MenuCardList from '../components/menu-card/MenuCardList';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
-import PageSection from '../components/structure/PageSection';
+import PageContainer from '../components/structure/PageContainer';
 import { getMenu } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
 
@@ -12,6 +12,7 @@ const Menu = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const isMounted = useRef(true);
+  const getLink = (id: number) => `/menu/${id}`;
 
   const loadData = async (isMounted: MutableRefObject<boolean>) => {
     const data = await getMenu();
@@ -31,7 +32,7 @@ const Menu = () => {
   }, []);
 
   return (
-    <PageSection title="Rock your taste buds with one of these!">
+    <PageContainer title="Rock your taste buds with one of these!">
       <LoadingSpinner
         loadingMessage="Loading ice cream menu..."
         doneLoadingMessage="Done Loading menu."
@@ -43,8 +44,8 @@ const Menu = () => {
             <MenuCard
               key={item.id.toString()}
               iceCream={item.iceCream}
-              onClick={() => navigate(`/ice-creams/${item.id}`)}
-              linkTo={`/ice-creams/${item.id}`}
+              onClick={() => navigate(getLink(item.id))}
+              linkTo={getLink(item.id)}
             >
               <div className="card-content">
                 <p className="price">${item.price.toFixed(2)}</p>
@@ -59,7 +60,7 @@ const Menu = () => {
           ))}
         </MenuCardList>
       )}
-    </PageSection>
+    </PageContainer>
   );
 };
 

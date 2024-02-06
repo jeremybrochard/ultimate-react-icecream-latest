@@ -9,7 +9,7 @@ export interface PageSectionParams {
   children: React.ReactNode | React.ReactNode[];
 }
 
-const PageSection = ({
+const PageContainer = ({
   title,
   headingLevel = 2,
   shouldUpdatePageTitle = true,
@@ -41,4 +41,4 @@ const PageSection = ({
   );
 };
 
-export default PageSection;
+export default PageContainer;

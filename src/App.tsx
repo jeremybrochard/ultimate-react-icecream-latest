@@ -1,8 +1,7 @@
 import { Fragment } from 'react';
+import { Outlet } from 'react-router-dom';
 import Footer from './components/structure/Footer';
 import Header from './components/structure/Header';
-import './styles/ice-cream.scss';
-import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
