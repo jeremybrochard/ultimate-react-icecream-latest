@@ -1,15 +1,15 @@
-import { FormEvent, ReactNode, useState } from 'react';
+import { FormEvent, ReactNode, useRef, useState } from 'react';
 import { useUniqueIds } from '../../hooks/useUniqueIds';
+import useValidation from '../../hooks/useValidation';
 import { IceCream } from '../../models/ice-cream';
 import { MenuItem } from '../../models/menu-item';
-import IceCreamImage from './IceCreamImage';
-import useValidation from '../../hooks/useValidation';
 import {
   validateDescription,
   validatePrice,
   validateQuantity,
 } from '../../utils/validators';
 import ErrorContainer from './ErrorContainer';
+import IceCreamImage from './IceCreamImage';
 
 export interface FormState {
   description: string;
@@ -87,6 +87,10 @@ const IceCreamForm = ({
     showError: hasFormBeingSubmitted,
   });
 
+  const descriptionRef = useRef(null as HTMLElement | null);
+  const quantityRef = useRef(null as HTMLElement | null);
+  const priceRef = useRef(null as HTMLElement | null);
+
   const onInStockValueChange = (event: any) => {
     const inStock = event.target.checked;
     setFormState({
@@ -125,6 +129,30 @@ const IceCreamForm = ({
     setHasFormBeingSubmitted(true);
 
     if (descriptionError || quantityError || priceError) {
+      if (descriptionError) {
+        descriptionRef.current?.focus();
+      }
+
+      if (quantityError) {
+        quantityRef.current?.focus();
+      }
+
+      if (priceError) {
+        priceRef.current?.focus();
+      }
+
+      // Use of timeout to focus first error <- kept as example
+      // setTimeout(() => {
+      //   if (formRef && formRef.current) {
+      //     const element = formRef.current.querySelector(
+      //       '[aria-invalid="true"]'
+      //     ) as HTMLElement;
+      //     console.log(element, formRef);
+      //     if (element) {
+      //       element.focus();
+      //     }
+      //   }
+      // });
       return;
     }
 
@@ -151,11 +179,12 @@ const IceCreamForm = ({
             errorId={descriptionErrorId}
           >
             <textarea
+              ref={descriptionRef}
               id={descriptionId}
               name="description"
               value={formState.description}
               onChange={onFormValueChange}
-              {...descriptionErrorProps as any}
+              {...(descriptionErrorProps as any)}
             ></textarea>
           </ErrorContainer>
           <label htmlFor={inStockId}>In Stock :</label>
@@ -176,11 +205,12 @@ const IceCreamForm = ({
             errorId={quantityErrorId}
           >
             <select
+              ref={quantityRef}
               id={quantityId}
               name="quantity"
               value={formState.quantity}
               onChange={onQuantityValueChange}
-              {...quantityErrorProps as any}
+              {...(quantityErrorProps as any)}
             >
               <option value="0">0</option>
               <option value="10">10</option>
@@ -199,13 +229,14 @@ const IceCreamForm = ({
             errorId={priceErrorId}
           >
             <input
+              ref={priceRef}
               id={priceId}
               name="price"
               type="number"
               step="0.01"
               value={formState.price}
               onChange={(event) => onFormValueChange(event, 'number')}
-              {...priceErrorProps as any}
+              {...(priceErrorProps as any)}
             ></input>
           </ErrorContainer>
           <div className="button-container">
