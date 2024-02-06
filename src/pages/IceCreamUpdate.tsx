@@ -70,13 +70,13 @@ const IceCreamUpdate = () => {
   };
 
   const onDelete = async () => {
-    if (menuItem) {
+    if (id) {
       setLoadingMessage('Deleting ice cream...');
       setDoneLoadingMessage(
         'Done deleting ice cream, redirecting to home page.'
       );
       setIsLoading(true);
-      const isSuccess = await deleteMenuItem(menuItem.id);
+      const isSuccess = await deleteMenuItem(+id);
 
       if (isSuccess) {
         setIsLoading(false);
