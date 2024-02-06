@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
 import { getMenu } from '../data/ice-cream-data';
 import { MenuItem } from '../models/menu-item';
+import MenuCardList from '../components/menu/MenuCardList';
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([] as MenuItem[]);
@@ -38,27 +39,26 @@ const Menu = () => {
         isLoading={isLoading}
       ></LoadingSpinner>
       {menuItems.length > 0 && (
-        <ul className="container">
+        <MenuCardList>
           {menuItems.map((item) => (
-            <li key={item.id.toString()}>
-              <MenuCard
-                iceCream={item.iceCream}
-                onClick={() => navigate(`/ice-creams/${item.id}`)}
-              >
-                <h3>
-                  <Link
-                    to={`/ice-creams/${item.id}`}
-                    state={{ focus: true }}
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    {item.iceCream.name}
-                  </Link>
-                </h3>
-                <MenuCardContent menuItem={item}></MenuCardContent>
-              </MenuCard>
-            </li>
+            <MenuCard
+              key={item.id.toString()}
+              iceCream={item.iceCream}
+              onClick={() => navigate(`/ice-creams/${item.id}`)}
+            >
+              <h3>
+                <Link
+                  to={`/ice-creams/${item.id}`}
+                  state={{ focus: true }}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  {item.iceCream.name}
+                </Link>
+              </h3>
+              <MenuCardContent menuItem={item}></MenuCardContent>
+            </MenuCard>
           ))}
-        </ul>
+        </MenuCardList>
       )}
     </PageSection>
   );

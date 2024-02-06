@@ -4,6 +4,7 @@ import MenuCard from '../components/menu/MenuCard';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
 import { IceCream } from '../models/ice-cream';
+import MenuCardList from '../components/menu/MenuCardList';
 
 const IceCreamList = () => {
   const data = useLoaderData() as { iceCreamsList: Promise<IceCream[]> };
@@ -27,22 +28,20 @@ const IceCreamList = () => {
                     Done loading available stock.
                   </p>
                 </div>
-                <ul className="container">
+                <MenuCardList>
                   {iceCreamsList.map((iceCream) => (
-                    <li key={iceCream.id.toString()}>
-                      <MenuCard iceCream={iceCream}>
-                        <h3>
-                          <Link
-                            to={`/ice-creams/add?iceCreamId=${iceCream.id}`}
-                            state={{ focus: true }}
-                          >
-                            {iceCream.name}
-                          </Link>
-                        </h3>
-                      </MenuCard>
-                    </li>
+                    <MenuCard iceCream={iceCream} key={iceCream.id.toString()}>
+                      <h3>
+                        <Link
+                          to={`/ice-creams/add?iceCreamId=${iceCream.id}`}
+                          state={{ focus: true }}
+                        >
+                          {iceCream.name}
+                        </Link>
+                      </h3>
+                    </MenuCard>
                   ))}
-                </ul>
+                </MenuCardList>
               </>
             )
           }
