@@ -1,20 +1,42 @@
 import { useEffect, useState } from 'react';
-import { ValidationFn, ValidationResult } from '../utils/validators';
+import { ValidationFn } from '../utils/validators';
 
-const useValidation = (
-  value: any,
-  validateFn: ValidationFn,
-  compareValue = null as any
-): string | null => {
-  const [validateResult, setValidateResult] = useState(
-    null as ValidationResult
-  );
+export interface ValidationParams {
+  value: any;
+  compareValue?: any;
+  validateFn: ValidationFn;
+  errorId: string;
+  showError: boolean;
+  isRequired: boolean;
+}
+
+export type ValidationResult = [
+  string | null,
+  {
+    'aria-describedby': string | null;
+    'aria-invalid': 'true' | 'false';
+    'aria-required': 'true' | null;
+    required: boolean;
+  },
+];
+
+const useValidation = (params: ValidationParams): ValidationResult => {
+  const { value, validateFn, compareValue, errorId, showError, isRequired } = params;
+  const [error, setError] = useState(null as string | null);
 
   useEffect(() => {
-    setValidateResult(validateFn(value, compareValue));
+    setError(validateFn(value, compareValue));
   }, [value, validateFn, compareValue]);
 
-  return validateResult;
+  return [
+    error,
+    {
+      'aria-describedby': error && showError ? errorId : null,
+      'aria-invalid': error && showError ? 'true' : 'false',
+      'aria-required': isRequired ? 'true' : null,
+      required: isRequired,
+    },
+  ];
 };
 
 export default useValidation;

@@ -54,18 +54,38 @@ const IceCreamForm = ({
     initialState ? setFormInitialState(initialState) : INITIAL_FORM_STATE
   );
   const [hasFormBeingSubmitted, setHasFormBeingSubmitted] = useState(false);
-  const [descriptionId, inStockId, quantityId, priceId] = useUniqueIds(4);
+  const [
+    descriptionId,
+    descriptionErrorId,
+    inStockId,
+    quantityId,
+    quantityErrorId,
+    priceId,
+    priceErrorId,
+  ] = useUniqueIds(7);
 
-  const descriptionError = useValidation(
-    formState.description,
-    validateDescription
-  );
-  const quantityError = useValidation(
-    formState.quantity,
-    validateQuantity,
-    formState.inStock
-  );
-  const priceError = useValidation(formState.price, validatePrice);
+  const [descriptionError, descriptionErrorProps] = useValidation({
+    isRequired: true,
+    errorId: descriptionErrorId,
+    validateFn: validateDescription,
+    value: formState.description,
+    showError: hasFormBeingSubmitted,
+  });
+  const [quantityError, quantityErrorProps] = useValidation({
+    isRequired: true,
+    errorId: quantityErrorId,
+    validateFn: validateQuantity,
+    value: formState.quantity,
+    compareValue: formState.inStock,
+    showError: hasFormBeingSubmitted,
+  });
+  const [priceError, priceErrorProps] = useValidation({
+    isRequired: true,
+    errorId: priceErrorId,
+    validateFn: validatePrice,
+    value: formState.price,
+    showError: hasFormBeingSubmitted,
+  });
 
   const onInStockValueChange = (event: any) => {
     const inStock = event.target.checked;
@@ -104,9 +124,11 @@ const IceCreamForm = ({
     event.preventDefault();
     setHasFormBeingSubmitted(true);
 
-    if (!descriptionError && !quantityError && !priceError) {
-      onFormSubmit({ ...formState });
+    if (descriptionError || quantityError || priceError) {
+      return;
     }
+
+    onFormSubmit({ ...formState });
   };
 
   return (
@@ -119,17 +141,21 @@ const IceCreamForm = ({
           <dt>Name :</dt>
           <dd>{iceCream.name}</dd>
         </dl>
-        <form onSubmit={submitForm}>
-          <label htmlFor={descriptionId}>Description* :</label>
+        <form onSubmit={submitForm} noValidate>
+          <label htmlFor={descriptionId}>
+            Description<span aria-hidden="true">*</span> :
+          </label>
           <ErrorContainer
             errorMessage={descriptionError}
             showError={hasFormBeingSubmitted}
+            errorId={descriptionErrorId}
           >
             <textarea
               id={descriptionId}
               name="description"
               value={formState.description}
               onChange={onFormValueChange}
+              {...descriptionErrorProps as any}
             ></textarea>
           </ErrorContainer>
           <label htmlFor={inStockId}>In Stock :</label>
@@ -147,12 +173,14 @@ const IceCreamForm = ({
           <ErrorContainer
             errorMessage={quantityError}
             showError={hasFormBeingSubmitted}
+            errorId={quantityErrorId}
           >
             <select
               id={quantityId}
               name="quantity"
               value={formState.quantity}
               onChange={onQuantityValueChange}
+              {...quantityErrorProps as any}
             >
               <option value="0">0</option>
               <option value="10">10</option>
@@ -162,10 +190,13 @@ const IceCreamForm = ({
               <option value="50">50</option>
             </select>
           </ErrorContainer>
-          <label htmlFor={priceId}>Price* :</label>
+          <label htmlFor={priceId}>
+            Price<span aria-hidden="true">*</span> :
+          </label>
           <ErrorContainer
             errorMessage={priceError}
             showError={hasFormBeingSubmitted}
+            errorId={priceErrorId}
           >
             <input
               id={priceId}
@@ -174,6 +205,7 @@ const IceCreamForm = ({
               step="0.01"
               value={formState.price}
               onChange={(event) => onFormValueChange(event, 'number')}
+              {...priceErrorProps as any}
             ></input>
           </ErrorContainer>
           <div className="button-container">
