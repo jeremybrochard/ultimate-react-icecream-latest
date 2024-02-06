@@ -1,41 +1,50 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { IceCream } from '../models/ice-cream';
 import { MenuItem } from '../models/menu-item';
 import { sortIceCreams, sortMenuItems } from '../utils';
 
+const handleError = (error: AxiosError) => {
+  console.error(error);
+  return { data: null };
+};
+
 export const getMenu = async (): Promise<MenuItem[]> => {
-  const { data } = (await axios.get('/api/menu')) as { data: MenuItem[] };
+  const { data } = await axios.get<MenuItem[]>('/api/menu');
   return data.sort(sortMenuItems);
 };
 
 export const getAvailableStock = async (): Promise<IceCream[]> => {
-  const { data } = (await axios.get('/api/menu/stock-ice-creams')) as {
-    data: IceCream[];
-  };
+  const { data } = await axios.get<IceCream[]>('/api/menu/stock-ice-creams');
   return data.sort(sortIceCreams);
 };
 
-export const getIceCream = async(id: number): Promise<IceCream> => {
-  const { data } = (await axios.get(`/api/menu/stock-ice-creams/${id}`)) as { data: IceCream };
+export const getIceCream = async (id: number): Promise<IceCream | null> => {
+  const { data } = await axios
+    .get<IceCream>(`/api/menu/stock-ice-creams/${id}`)
+    .catch(handleError);
   return data;
 };
 
-export const getMenuItem = async (id: number): Promise<MenuItem> => {
-  const { data } = (await axios.get(`/api/menu/${id}`)) as { data: MenuItem };
+export const getMenuItem = async (id: number): Promise<MenuItem | null> => {
+  const { data } = await axios
+    .get<MenuItem>(`/api/menu/${id}`)
+    .catch(handleError);
   return data;
 };
 
-export const addMenuItem = async (item: MenuItem): Promise<MenuItem> => {
-  const { data } = (await axios.post(`/api/menu`, item)) as {
-    data: MenuItem;
-  };
+export const addMenuItem = async (item: MenuItem): Promise<MenuItem | null> => {
+  const { data } = await axios
+    .post<MenuItem>(`/api/menu`, item)
+    .catch(handleError);
   return data;
 };
 
-export const updateMenuItem = async (item: MenuItem): Promise<MenuItem> => {
-  const { data } = (await axios.put(`/api/menu/${item.id}`, item)) as {
-    data: MenuItem;
-  };
+export const updateMenuItem = async (
+  item: MenuItem
+): Promise<MenuItem | null> => {
+  const { data } = await axios
+    .put<MenuItem>(`/api/menu/${item.id}`, item)
+    .catch(handleError);
   return data;
 };
 

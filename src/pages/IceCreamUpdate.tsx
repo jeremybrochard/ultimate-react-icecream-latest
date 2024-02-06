@@ -37,9 +37,13 @@ const IceCreamUpdate = () => {
     isMounted: MutableRefObject<boolean>
   ): Promise<void> => {
     const menuItem = await getMenuItem(id);
-    if (menuItem && isMounted.current) {
-      setMenuItem({ ...menuItem });
-      setIsLoading(false);
+    if (isMounted.current) {
+      if (menuItem) {
+        setMenuItem({ ...menuItem });
+        setIsLoading(false);
+      } else {
+        setDoRedirectToHomePage(true);
+      }
     }
   };
 
@@ -61,11 +65,15 @@ const IceCreamUpdate = () => {
         price,
         quantity,
       });
-      setMenuItem({ ...updatedIceCream });
-      setIsLoading(false);
-      setTimeout(() => {
-        setDoRedirectToHomePage(true);
-      }, 400);
+      if (updatedIceCream) {
+        setMenuItem({ ...updatedIceCream });
+        setIsLoading(false);
+        setTimeout(() => {
+          setDoRedirectToHomePage(true);
+        }, 400);
+      } else {
+        setIsLoading(false);
+      }
     }
   };
 
