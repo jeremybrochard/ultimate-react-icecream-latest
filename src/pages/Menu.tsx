@@ -1,7 +1,6 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuCard from '../components/menu/MenuCard';
-import MenuCardContent from '../components/menu/MenuCardContent';
 import MenuCardList from '../components/menu/MenuCardList';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageSection from '../components/structure/PageSection';
@@ -47,7 +46,15 @@ const Menu = () => {
               onClick={() => navigate(`/ice-creams/${item.id}`)}
               linkTo={`/ice-creams/${item.id}`}
             >
-              <MenuCardContent menuItem={item}></MenuCardContent>
+              <div className="card-content">
+                <p className="price">${item.price.toFixed(2)}</p>
+                {item.inStock ? (
+                  <p className="stock">{item.quantity} in stock</p>
+                ) : (
+                  <p className="stock out">Currently out of stock</p>
+                )}
+                <p className="description">{item.description}</p>
+              </div>
             </MenuCard>
           ))}
         </MenuCardList>
