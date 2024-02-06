@@ -3,7 +3,7 @@ export type ValidationFn = (value: any, compareValue?: any) => string | null;
 export const validateDescription: ValidationFn = (
   description: string
 ): string | null => {
-  return description ? null : 'You must enter a description';
+  return description.trim() ? null : 'You must enter a description';
 };
 
 export const validateQuantity: ValidationFn = (
