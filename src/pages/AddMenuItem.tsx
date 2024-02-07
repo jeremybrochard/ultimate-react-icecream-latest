@@ -32,10 +32,13 @@ const AddMenuItem = () => {
     id: number,
     isMounted: MutableRefObject<boolean>
   ): Promise<void> => {
+    setIsLoading(true);
     const iceCream = await getIceCream(id);
     if (iceCream && isMounted.current) {
       setIceCream({ ...iceCream });
       setIsLoading(false);
+    } else {
+      setDoRedirect(true);
     }
   };
 
@@ -60,7 +63,7 @@ const AddMenuItem = () => {
   };
 
   return (
-    <PageContainer title="Add ice cream to menu">
+    <PageContainer title="Add some goodness to the menu">
       {doRedirect && <Navigate to="/" state={{ focus: true }}></Navigate>}
       <LoadingSpinner
         loadingMessage={loadingMessage}
