@@ -1,7 +1,8 @@
-import { FormEvent, ReactNode, useRef, useState } from 'react';
+import { FormEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useUniqueIds } from '../../hooks/useUniqueIds';
 import useValidation from '../../hooks/useValidation';
 import { IceCream } from '../../models/ice-cream';
+import { IceCreamFormState } from '../../models/ice-cream-form-state';
 import { MenuItem } from '../../models/menu-item';
 import {
   validateDescription,
@@ -11,48 +12,25 @@ import {
 import ErrorContainer from './ErrorContainer';
 import IceCreamImage from './IceCreamImage';
 
-export interface FormState {
-  description: string;
-  inStock: boolean;
-  quantity: number;
-  price: number;
+export interface IceCreamFormParams {
+  iceCream: IceCream;
+  initialState?: MenuItem | null;
+  onFormSubmit: (formState: IceCreamFormState) => void;
+  additionalButtons?: ReactNode | ReactNode[];
 }
-
-const INITIAL_FORM_STATE = {
-  description: '',
-  inStock: false,
-  quantity: 0,
-  price: 0,
-};
-
-const setFormInitialState = ({
-  inStock,
-  quantity,
-  price,
-  description,
-}: MenuItem): FormState => {
-  return {
-    description,
-    inStock,
-    price,
-    quantity,
-  };
-};
 
 const IceCreamForm = ({
   iceCream,
   initialState = null,
   onFormSubmit,
   additionalButtons,
-}: {
-  iceCream: IceCream;
-  initialState?: MenuItem | null;
-  onFormSubmit: (formState: FormState) => void;
-  additionalButtons?: ReactNode | ReactNode[];
-}) => {
-  const [formState, setFormState] = useState(
-    initialState ? setFormInitialState(initialState) : INITIAL_FORM_STATE
-  );
+}: IceCreamFormParams) => {
+  const [formState, setFormState] = useState({
+    description: '',
+    inStock: false,
+    quantity: 0,
+    price: 0,
+  });
   const [hasFormBeingSubmitted, setHasFormBeingSubmitted] = useState(false);
   const [
     descriptionId,
@@ -90,6 +68,17 @@ const IceCreamForm = ({
   const descriptionRef = useRef(null as HTMLElement | null);
   const quantityRef = useRef(null as HTMLElement | null);
   const priceRef = useRef(null as HTMLElement | null);
+
+  useEffect(() => {
+    if (initialState) {
+      setFormState({
+        description: initialState.description,
+        inStock: initialState.inStock,
+        price: initialState.price,
+        quantity: initialState.quantity,
+      });
+    }
+  }, [initialState]);
 
   const onInStockValueChange = (event: any) => {
     const inStock = event.target.checked;

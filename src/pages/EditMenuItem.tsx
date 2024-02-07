@@ -1,6 +1,5 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import PageContainer from '../components/structure/PageContainer';
 import {
@@ -8,7 +7,9 @@ import {
   getMenuItem,
   updateMenuItem,
 } from '../data/ice-cream-data';
+import { IceCreamFormState } from '../models/ice-cream-form-state';
 import { MenuItem } from '../models/menu-item';
+import IceCreamForm from '../components/shared/IceCreamForm';
 
 const EditMenuItem = () => {
   const isMounted = useRef(true);
@@ -52,7 +53,7 @@ const EditMenuItem = () => {
     inStock,
     price,
     quantity,
-  }: FormState) => {
+  }: IceCreamFormState) => {
     if (menuItem) {
       setLoadingMessage('Updating ice cream...');
       setDoneLoadingMessage('Done updating ice cream.');

@@ -1,10 +1,11 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
-import PageContainer from '../components/structure/PageContainer';
-import IceCreamForm, { FormState } from '../components/shared/IceCreamForm';
-import { IceCream } from '../models/ice-cream';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { addMenuItem, getIceCream } from '../data/ice-cream-data';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
+import PageContainer from '../components/structure/PageContainer';
+import { addMenuItem, getIceCream } from '../data/ice-cream-data';
+import { IceCream } from '../models/ice-cream';
+import { IceCreamFormState } from '../models/ice-cream-form-state';
+import IceCreamForm from '../components/shared/IceCreamForm';
 
 const AddMenuItem = () => {
   const isMounted = useRef(true);
@@ -43,7 +44,7 @@ const AddMenuItem = () => {
     inStock,
     price,
     quantity,
-  }: FormState) => {
+  }: IceCreamFormState) => {
     if (iceCream) {
       setIsLoading(true);
       await addMenuItem({
