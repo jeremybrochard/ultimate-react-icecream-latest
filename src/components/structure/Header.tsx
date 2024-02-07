@@ -1,5 +1,5 @@
+import { NavLink } from 'react-router-dom';
 import iceCreamImage from '../../assets/img/ultimate-ice-cream.svg';
-import Navbar from './Navbar';
 
 const NAVBAR_ITEMS = [
   {
@@ -24,7 +24,13 @@ const Header = () => (
       <img src={iceCreamImage} alt=""></img>
       Ultimate Ice Cream
     </h1>
-    <Navbar links={NAVBAR_ITEMS}></Navbar>
+    <nav>
+      {NAVBAR_ITEMS.map(({ title, path, state }) => (
+        <NavLink key={path} to={path} state={state}>
+          {title}
+        </NavLink>
+      ))}
+    </nav>
   </header>
 );
 
