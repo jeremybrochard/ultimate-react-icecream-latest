@@ -32,7 +32,7 @@ export const getMenuItem = async (id: number): Promise<MenuItem | null> => {
   return data;
 };
 
-export const addMenuItem = async (item: MenuItem): Promise<MenuItem | null> => {
+export const addMenuItem = async (item:  Omit<MenuItem, 'id'>): Promise<MenuItem | null> => {
   const { data } = await axios
     .post<MenuItem>(`/api/menu`, item)
     .catch(handleError);

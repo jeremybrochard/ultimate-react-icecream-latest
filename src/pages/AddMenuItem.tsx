@@ -48,7 +48,6 @@ const AddMenuItem = () => {
     if (iceCream) {
       setIsLoading(true);
       await addMenuItem({
-        id: 0,
         iceCream: iceCream,
         description,
         inStock,
